@@ -20,18 +20,9 @@ class Todo
   end
 
   def to_displayable_string
-    str = ""
-    if @completed
-      str << "[X] "
-    else
-      str << "[ ] "
-    end
-
-    if overdue? || due_later?
-      str << "#{@text} #{@due_date}"
-    else
-      str << @text
-    end
+    display_status = @completed ? "[X]" : "[ ]"
+    display_date = due_today? ? nil : @due_date
+    "#{display_status} #{@text} #{display_date}"
   end
 end
 
@@ -57,10 +48,7 @@ class TodosList
   end
 
   def to_displayable_list
-    todo_item = []
-    @todos.each do |todo|
-      todo_item << todo.to_displayable_string
-    end
+    todo_item = @todos.map { |todo| todo.to_displayable_string }
     todo_item.join("\n")
   end
 end
